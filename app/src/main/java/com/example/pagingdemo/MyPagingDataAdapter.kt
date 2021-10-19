@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-class MyAdapter() : PagedListAdapter<Student, MyAdapter.ViewHolder>(diffCallback) {
+class MyPagingDataAdapter() : PagingDataAdapter<Student, MyPagingDataAdapter.MyPagingViewHolder>(diffCallback) {
 
     private companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<Student>() {
@@ -20,7 +20,7 @@ class MyAdapter() : PagedListAdapter<Student, MyAdapter.ViewHolder>(diffCallback
         }
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class MyPagingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.textView)
 
         fun setText(text: String?) {
@@ -28,13 +28,13 @@ class MyAdapter() : PagedListAdapter<Student, MyAdapter.ViewHolder>(diffCallback
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPagingViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.adapter_page_list, parent, false)
-        return ViewHolder(view)
+        return MyPagingViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setText("我是第${position}位学生：${getItem(position)?.name}")
+    override fun onBindViewHolder(holderMyPaging: MyPagingViewHolder, position: Int) {
+        holderMyPaging.setText("我是第${position}位学生：${getItem(position)?.name}")
     }
 
 }
