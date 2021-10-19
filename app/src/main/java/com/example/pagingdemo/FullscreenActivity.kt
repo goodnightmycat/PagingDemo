@@ -2,6 +2,7 @@ package com.example.pagingdemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,20 +28,33 @@ class FullscreenActivity : AppCompatActivity() {
         }
     }
 
-    val viewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(this.application).create(MyViewModel::class.java)
+    val viewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
+        .create(MyViewModel::class.java)
 
     override fun onResume() {
         super.onResume()
-        lifecycleScope.launch {
-            try {
-                viewModel.flow.collectLatest {
-                    myAdapter.submitData(it)
-                }
-            } catch (e:Exception){
-                e.printStackTrace()
-            }
+//        lifecycleScope.launch {
+//            try {
+//                viewModel.flow.collectLatest {
+//                    myAdapter.submitData(it)
+//                }
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
+//
+//        }
 
-        }
+        viewModel.liveData.observe(this, Observer {
+            lifecycleScope.launch {
+                try {
+                    myAdapter.submitData(it)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+            }
+        })
+
     }
 
 }
