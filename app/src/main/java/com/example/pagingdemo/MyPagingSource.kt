@@ -12,18 +12,32 @@ import androidx.paging.PagingState
 class MyPagingSource : PagingSource<Int, Student>() {
 
     override fun getRefreshKey(state: PagingState<Int, Student>): Int? {
-        return state.pages.size
+        return null
     }
 
+    private var currentKey = 0
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Student> {
-        Log.e("hahaha", "aa${params.key?.toString()}")
+        Log.e("MyPagingSource", "load->key:${params.key}")
         val list = ArrayList<Student>()
-        for (i in 0..5) {
-            val student = Student()
-            student.name = CHEESE_DATA[i]
-            list.add(student)
+        //params.loadSize默认值为PagingConfig.pageSize*3，构造函数传值initialLoadSize覆盖。
+        if (params.key == null) {
+            for (i in 0..params.loadSize) {
+                val student = Student()
+                student.name = CHEESE_DATA[i]
+                list.add(student)
+            }
+
+        } else {
+            for (i in 20..30) {
+                val student = Student()
+                student.name = CHEESE_DATA[i]
+                list.add(student)
+            }
         }
-        return LoadResult.Page(data = list, prevKey = 1, nextKey = 1)
+        currentKey++
+
+        return LoadResult.Page(data = list, prevKey = null, nextKey = currentKey)
     }
 
 

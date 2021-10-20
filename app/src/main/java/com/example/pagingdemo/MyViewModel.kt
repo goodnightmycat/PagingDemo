@@ -6,21 +6,17 @@ import androidx.paging.*
 
 class MyViewModel : ViewModel() {
 
-    val flow = Pager(
+    val pager = Pager(
         // Configure how data is loaded by passing additional properties to
         // PagingConfig, such as prefetchDistance.
-        PagingConfig(pageSize = 20)
+        PagingConfig(pageSize = 3)
     ) {
         MyPagingSource()
-    }.flow.cachedIn(viewModelScope)
+    }
 
+    val flow = pager.flow.cachedIn(viewModelScope)
 
-    val liveData = Pager(
-        // Configure how data is loaded by passing additional properties to
-        // PagingConfig, such as prefetchDistance.
-        PagingConfig(pageSize = 20)
-    ) {
-        MyPagingSource()
-    }.liveData
+    val liveData = pager.liveData
+
 
 }
