@@ -34,32 +34,28 @@ class FullscreenActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
-        lifecycleScope.launch {
-            try {
-                viewModel.flow.collectLatest {
-                    myAdapter.submitData(it)
-                }
-            } catch (e: Exception) {
-                Log.e("hahaha",e.message.toString())
-                e.printStackTrace()
-            }
-
-        }
-
-//        viewModel.liveData.observe(this, Observer {
-//            Log.e("hahaha",Log.getStackTraceString(object : Throwable(){
 //
-//            }))
-//            lifecycleScope.launch {
-//                try {
+//        lifecycleScope.launch {
+//            try {
+//                viewModel.flow.collectLatest {
 //                    myAdapter.submitData(it)
-//                } catch (e: Exception) {
-//                    e.printStackTrace()
 //                }
-//
+//            } catch (e: Exception) {
+//                e.printStackTrace()
 //            }
-//        })
+//
+//        }
+
+        viewModel.liveData.observe(this, Observer {
+            lifecycleScope.launch {
+                try {
+                    myAdapter.submitData(it)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+            }
+        })
 
     }
 

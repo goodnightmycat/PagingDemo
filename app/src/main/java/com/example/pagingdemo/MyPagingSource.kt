@@ -18,7 +18,9 @@ class MyPagingSource : PagingSource<Int, Student>() {
     private var currentKey = 0
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Student> {
-        Log.e("MyPagingSource", "load->key:${params.key}")
+        Log.e("hahaha",Log.getStackTraceString(object : Throwable(){
+
+        }))
         val list = ArrayList<Student>()
         //params.loadSize默认值为PagingConfig.pageSize*3，构造函数传值initialLoadSize覆盖。
         if (params.key == null) {
